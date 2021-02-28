@@ -15,7 +15,7 @@ export default function App() {
           and is{" "}
           <a
             href="https://github.com/bgdelcampo/react-final-final"
-            target="_blank"
+
           >
             open-sourced on GitHub
           </a>{" "}
