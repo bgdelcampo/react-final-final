@@ -1,33 +1,24 @@
 import React, { useState } from "react";
 import WeatherInfo from "./WeatherInfo";
+
 import axios from "axios";
 import "./Weather.css";
-
 
 export default function Weather(props) {
     const [weatherData, setWeatherData] = useState({ ready: false });
     const [city, setCity] = useState(props.defaultCity);
 
     function handleResponse(response) {
-        console.log(response.data);
         setWeatherData({
             ready: true,
             temperature: response.data.main.temp,
             humidity: response.data.main.humidity,
-
+            date: new Date(response.data.dt * 1000),
             description: response.data.weather[0].description,
             icon: response.data.weather[0].icon,
             wind: response.data.wind.speed,
             city: response.data.name,
-            iconUrl: "https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png",
-
         });
-    }
-
-    function search() {
-        const apiKey = "3ad13e184308fdcf4ae098a37ba13c6b";
-        let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-        axios.get(apiUrl).then(handleResponse);
     }
 
     function handleSubmit(event) {
@@ -37,6 +28,12 @@ export default function Weather(props) {
 
     function handleCityChange(event) {
         setCity(event.target.value);
+    }
+
+    function search() {
+        const apiKey = "5f472b7acba333cd8a035ea85a0d4d4c";
+        let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+        axios.get(apiUrl).then(handleResponse);
     }
 
     if (weatherData.ready) {
@@ -65,8 +62,9 @@ export default function Weather(props) {
                 <WeatherInfo data={weatherData} />
 
             </div>
-        )
+        );
     } else {
+        search();
         return "Loading...";
     }
 }
